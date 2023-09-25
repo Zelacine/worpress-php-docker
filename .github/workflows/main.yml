@@ -21,5 +21,9 @@ jobs:
         run: |
           if [[ $GITHUB_REF == refs/heads/master ]]; then
             rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/docker_project/
-          else [[ $GITHUB_REF == refs/heads/staging ]]; then
+          elif [[ $GITHUB_REF == refs/heads/staging ]]; then
             rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/docker_project_staging/
+          else
+            echo "Unsupported branch: $GITHUB_REF"
+            exit 1
+          fi
