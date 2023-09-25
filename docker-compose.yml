@@ -26,10 +26,10 @@ wordpress:
     volumes:
         - ./wordpress:/var/www/html
     environment:
-        - WORDPRESS_DB_NAME=wpdb
+        - WORDPRESS_DB_NAME=wpdb_staging
         - WORDPRESS_TABLE_PREFIX=wp_
         - WORDPRESS_DB_HOST=mysql
-        - WORDPRESS_DB_PASSWORD=Strong password
+        - WORDPRESS_DB_PASSWORD=Strong_password
     links:
         - mysql
     restart: always
