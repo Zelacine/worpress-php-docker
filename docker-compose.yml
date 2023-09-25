@@ -16,7 +16,7 @@ mysql:
     volumes:
         - ./db-data:/var/lib/mysql
     environment:
-        - MYSQL_ROOT_PASSWORD=Strong password
+        - MYSQL_ROOT_PASSWORD=StrongPassword
     restart: always
 wordpress:
 
@@ -26,10 +26,10 @@ wordpress:
     volumes:
         - ./wordpress:/var/www/html
     environment:
-        - WORDPRESS_DB_NAME=wpdb
+        - WORDPRESS_DB_NAME=wpdb_prod
         - WORDPRESS_TABLE_PREFIX=wp_
         - WORDPRESS_DB_HOST=mysql
-        - WORDPRESS_DB_PASSWORD=Strong password
+        - WORDPRESS_DB_PASSWORD=StrongPassword
     links:
         - mysql
     restart: always
