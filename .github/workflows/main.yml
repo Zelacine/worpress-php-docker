@@ -2,7 +2,7 @@ name: deploy
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
       - 'staging'
 jobs:
   build-and-deploy:
@@ -17,7 +17,7 @@ jobs:
 
       - name: Deploy with rsync
         run: |
-          if [[ $GITHUB_REF == refs/heads/master ]]; then
+          if [[ $GITHUB_REF == refs/heads/main ]]; then
             ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
             rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/docker_project/
           elif [[ $GITHUB_REF == refs/heads/staging ]]; then
