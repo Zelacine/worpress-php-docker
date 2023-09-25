@@ -2,8 +2,8 @@ name: deploy
 on:
   push:
     branches:
-      - 'master'
-      - 'staging'
+      - main
+      - master
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -15,15 +15,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           known_hosts: unnecessary
 
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Deploy with rsync
-        run: |
-          if [[ $GITHUB_REF == refs/heads/master ]]; then
-            ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-            rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/docker_project/
-          elif [[ $GITHUB_REF == refs/heads/staging ]]; then
-            ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-            rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/docker_project_staging/
-          else
-            echo "Unsupported branch: $GITHUB_REF"
-            exit 1
-          fi
+        run: rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ubuntu/docker_project/
